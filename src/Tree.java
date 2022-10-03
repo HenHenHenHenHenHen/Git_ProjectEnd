@@ -13,7 +13,10 @@ import java.util.ArrayList;
 public class Tree {
 	private String contents = ""; 
 	private String hashedContents;
-	public Tree (ArrayList <String> list) throws IOException {
+	private Tree parentTree;
+	ArrayList<Object> treeContent = new ArrayList<Object>(); 
+	public Tree (Tree parentTree, ArrayList <String> list) throws IOException {
+		this.parentTree = parentTree;
 		for (int i = 0; i < list.size() - 1; i++) {
 			contents += list.get(i); 
 			contents += "\n";
@@ -23,9 +26,9 @@ public class Tree {
 		hashedContents = genHash(contents);
 		
 		File f = new File ("./objects/" + hashedContents);
-		
+		   
 		FileWriter fw = new FileWriter(f);
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {  
 			fw.write(list.get(i)); 
 			fw.write("\n");
 		}
@@ -54,5 +57,29 @@ public class Tree {
 		catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+	}
+	
+	public Tree getParent () {
+		return parentTree;
+	}
+	
+	public String toString () {
+		StringBuilder toReturn = new StringBuilder ();
+		for (int i = 0; i < treeContent.size(); i++) {
+			if (((Tree) treeContent.get(i)).equals(treeContent.get(i))) {
+				toReturn.append("tree : ");
+				toReturn.append (((Tree) treeContent.get(i)).getsha1() + " ");
+			}
+			else {
+				toReturn.append("blob : ");
+				toReturn.append((((Blob) (treeContent.get(i))).getsha1()) + " ");
+				toReturn.append(((Blob) treeContent.get(i)).getOriginalFileName());
+			}
+		}
+		return toReturn.toString();
+	}
+	
+	public String getsha1 () {
+		return hashedContents;
 	}
 }

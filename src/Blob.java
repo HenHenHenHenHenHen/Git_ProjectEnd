@@ -18,9 +18,11 @@ public class Blob
 
 	String content;
 	String sha1;
+	String originalFileName;
 	
 	public Blob(String inputFile) throws IOException
 	{
+		originalFileName = inputFile;
 		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 		StringBuilder sb = new StringBuilder("");
 		
@@ -79,4 +81,12 @@ public class Blob
 	    formatter.close();
 	    return result;
 	}
-}
+	
+	public String getsha1() {
+		return sha1;
+	}
+	
+	public String getOriginalFileName () {
+		return originalFileName;
+	}
+	}

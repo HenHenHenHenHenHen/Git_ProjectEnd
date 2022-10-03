@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Commit {
 	
-	public String pTree = null;
+	public Tree tree;
 	public String summary;
 	public String author;
 	public String date;
@@ -19,9 +19,9 @@ public class Commit {
 	Commit previous;
 	Commit next;
 	
-	public Commit(String pTreeValue, String summaryValue, String authorName, Commit parent)
+	public Commit(Tree tree, String summaryValue, String authorName, Commit parent)
 	{
-		pTree = pTreeValue;
+		this.tree = tree;
 		summary = summaryValue;
 		author = authorName;
 		date = getDate();
@@ -37,7 +37,7 @@ public class Commit {
 	
 	public void writeFile()
 	{
-		String toWrite = pTree + "\n";
+		String toWrite = tree + "\n";
 		if(previous != null)
 			toWrite += "./objects/" + previous.commitSHA1();
 		toWrite += "\n";
@@ -58,7 +58,7 @@ public class Commit {
 	
 	public String commitSHA1()
 	{
-		String info = pTree + "\n";
+		String info = tree + "\n";
 		if(previous != null)
 		{
 			info += previous + "\n";
