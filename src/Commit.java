@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -11,22 +13,48 @@ import java.util.Date;
 
 public class Commit {
 	
-	public Tree tree;
 	public String summary;
 	public String author;
 	public String date;
 	
 	Commit previous;
 	Commit next;
+	Index commitsIndex;
+	Tree tree;
+	Tree parentTree;
 	
-	public Commit(Tree tree, String summaryValue, String authorName, Commit parent)
+	public Commit(String summaryValue, String authorName) throws IOException
 	{
-		this.tree = tree;
+		tree = new Tree ();
+		summary = summaryValue;
+		author = authorName;
+		date = getDate();
+		next = null;
+		
+		Index.clear();
+	}
+	
+	public Commit(String summaryValue, String authorName, Commit parent) throws IOException
+	{
+		parentTree = parent.getTree();
+		tree = new Tree (parentTree);
+		tree.setParentTree(parentTree);
 		summary = summaryValue;
 		author = authorName;
 		date = getDate();
 		previous = parent;
-		next = null;
+		next  = null;
+		parent.setNextCommit(this);
+		
+		Index.clear();
+	}
+	
+	public void setNextCommit (Commit nextCommit) {
+		next = nextCommit;
+	}
+	
+	public Tree getTree () {
+		return tree;
 	}
 	
 	public String getDate()

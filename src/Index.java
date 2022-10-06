@@ -16,9 +16,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 public class Index {
 	
-	HashMap<String, String> blobMap = new HashMap<String, String>();
+	public static HashMap<String, String> blobMap = new HashMap<String, String>();
 	String location;
-	File index;
+	public static File index;
 	
 	public Index()
 	{
@@ -57,5 +57,12 @@ public class Index {
 		out.close();
 
 	}
+	
+	public static void clear () throws IOException {
+		blobMap.clear();
+		PrintWriter out = new PrintWriter(new FileWriter(index));
+		out.close();
+	}
+
 
 }
