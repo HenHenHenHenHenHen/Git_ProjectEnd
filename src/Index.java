@@ -44,9 +44,29 @@ public class Index {
 		out.close();
 	}
 	
+	public void edit (String fileName, String newContent) throws IOException {
+		File toEdit = new File ("./objects/" + blobMap.get(fileName));
+		FileWriter toEditWriter = new FileWriter (toEdit);
+		toEditWriter.append(newContent);
+		toEditWriter.close();
+		File newEditedFile = new File ("./objects/" + Blob.generateSHA1(newContent));
+		toEdit.renameTo(newEditedFile);
+		remove (fileName);
+		
+		PrintWriter out = new PrintWriter(new FileWriter(index));
+		for(String key : blobMap.keySet())
+		{
+			out.write(key + " : " + blobMap.get(key) + "\n");
+		}
+		out.write("*edited*" + fileName + " : " + Blob.generateSHA1(newContent));
+		out.close();
+		
+	}
+	
 	public void remove(String fileName) throws IOException
 	{
 		File toDelete = new File("./objects/" + blobMap.get(fileName)); 
+		System.out.print(blobMap.get(fileName));
 		toDelete.delete();
 	    blobMap.remove(fileName);
 	    PrintWriter out = new PrintWriter(new FileWriter(index));
