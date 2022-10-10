@@ -84,6 +84,8 @@ public Tree (Tree parentTree) throws IOException {
 		return parentTree;
 	}
 	
+
+	
 	public String getTreeString () {
 		return treeString;
 	}

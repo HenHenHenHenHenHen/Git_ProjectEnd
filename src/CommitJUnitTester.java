@@ -30,17 +30,17 @@ public class CommitJUnitTester {
 		reader.close();
 		
 //		
-//		i.add("file3.txt");
-//		Commit c2 = new Commit ("Did more things", "Henry", c1);
-//		
-//		String file2Contents = "";
-//		BufferedReader reader2 = new BufferedReader(new FileReader("objects/09bce6ba507bdeacbeb23b5af8ec713d63ca4c72"));
-//		while (reader2.ready()) {
-//			file2Contents += (char) reader2.read();
-//		}
-//		assertTrue (file2Contents.equals("blob : 65858e36d6f736988f1a7b6ec0c6d4958855f291 file3.txt\n"
-//				+ "tree : 31719f883d0a9f2410bf8120e48a62de8172dd0"));
-//		reader2.close();
+		i.add("file3.txt");
+		Commit c2 = new Commit ("Did more things", "Henry", c1);
+		
+		String file2Contents = "";
+		BufferedReader reader2 = new BufferedReader(new FileReader("objects/09bce6ba507bdeacbeb23b5af8ec713d63ca4c72"));
+		while (reader2.ready()) {
+			file2Contents += (char) reader2.read();
+		}
+		assertTrue (file2Contents.equals("blob : 65858e36d6f736988f1a7b6ec0c6d4958855f291 file3.txt\n"
+				+ "tree : 31719f883d0a9f2410bf8120e48a62de8172dd0"));
+		reader2.close();
 //		
 //		i.add("file4.txt");
 //		Commit c3 = new Commit ("Did even more things", "Henry", c2);

@@ -44,14 +44,55 @@ public class Index {
 		out.close();
 	}
 	
-	public void edit (String fileName, String newContent) throws IOException {
+	//returns sha of desired fileToDelete
+	public String traverseTree (String fileToDelete, String tree) throws IOException {
+		String containsFileResults = containsFile (fileToDelete, tree);
+		if (!containsFileResults.equals("f")) {
+			return containsFileResults;
+		} else {
+			return traverseTree (fileToDelete, getParentTreeString(tree));
+		}
+	}
+	
+	public String containsFile (String file, String tree) {
+		Scanner treeScanner = new Scanner (tree);
+		while (treeScanner.hasNextLine()) {
+			String newLine = treeScanner.nextLine();
+			if (newLine.substring(0, 4).equals ("blob") && newLine.substring(7, 41).equals(file)) {
+				treeScanner.close();
+				return  newLine.substring(7, 47);
+			}
+		}
+		treeScanner.close();
+		return "f";
+	}
+	
+	public String getParentTreeString (String treeString) throws IOException {
+		String newLine = "";
+		Scanner treeScanner = new Scanner (treeString);
+		while (treeScanner.hasNextLine()) {
+			newLine = treeScanner.nextLine();
+		}
+		treeScanner.close();
+		File parentTree = new File (newLine.substring(7));
+		BufferedReader parentTreeScanner = new BufferedReader (new FileReader (parentTree));
+		String parentTreeString = "";
+		while (parentTreeScanner.ready()) {
+			parentTreeString += parentTreeScanner.read();
+		}
+		parentTreeScanner.close();
+		return parentTreeString;
+		
+	}
+	
+	public void edit (String fileName, String treeString, String newContent) throws IOException {
 		File toEdit = new File ("./objects/" + blobMap.get(fileName));
 		FileWriter toEditWriter = new FileWriter (toEdit);
 		toEditWriter.append(newContent);
 		toEditWriter.close();
 		File newEditedFile = new File ("./objects/" + Blob.generateSHA1(newContent));
 		toEdit.renameTo(newEditedFile);
-		remove (fileName);
+		remove (fileName, treeString);
 		
 		PrintWriter out = new PrintWriter(new FileWriter(index));
 		for(String key : blobMap.keySet())
@@ -63,12 +104,10 @@ public class Index {
 		
 	}
 	
-	public void remove(String fileName) throws IOException
+	public void remove(String fileName, String treeString) throws IOException
 	{
-		File toDelete = new File("./objects/" + blobMap.get(fileName)); 
-		System.out.print(blobMap.get(fileName));
-		toDelete.delete();
-	    blobMap.remove(fileName);
+		String fileToDelete = traverseTree (fileName, treeString);
+		//FINISH
 	    PrintWriter out = new PrintWriter(new FileWriter(index));
 		for(String key : blobMap.keySet())
 		{
