@@ -86,15 +86,13 @@ public class Index {
 	}
 	
 	public void edit (String fileName, String treeString, String newContent) throws IOException {
-		File toEdit = new File ("./objects/" + blobMap.get(fileName));
-		FileWriter toEditWriter = new FileWriter (toEdit);
-		toEditWriter.append(newContent);
-		toEditWriter.close();
-		File newEditedFile = new File ("./objects/" + Blob.generateSHA1(newContent));
-		toEdit.renameTo(newEditedFile);
-		remove (fileName, treeString);
-		
+		File edited = new File ("./objects/" + Blob.generateSHA1(newContent));
+		FileWriter editWriter = new FileWriter (edited);
+		editWriter.append(newContent);
+		editWriter.close();
+		String oldFile = traverseTree (fileName, treeString);
 		PrintWriter out = new PrintWriter(new FileWriter(index));
+		blobMap.put(fileName, Blob.generateSHA1(newContent));
 		for(String key : blobMap.keySet())
 		{
 			out.write(key + " : " + blobMap.get(key) + "\n");
