@@ -95,7 +95,8 @@ public class Index {
 		blobMap.put(fileName, Blob.generateSHA1(newContent));
 		for(String key : blobMap.keySet())
 		{
-			out.write(key + " : " + blobMap.get(key) + "\n");
+			if (!blobMap.get(key).equals(oldFile))
+				out.write(key + " : " + blobMap.get(key) + "\n");
 		}
 		out.write("*edited*" + fileName + " : " + Blob.generateSHA1(newContent));
 		out.close();
@@ -109,8 +110,10 @@ public class Index {
 	    PrintWriter out = new PrintWriter(new FileWriter(index));
 		for(String key : blobMap.keySet())
 		{
-			out.write(key + " : " + blobMap.get(key) + "\n");
+			if (!blobMap.get(key).equals(fileToDelete))
+				out.write(key + " : " + blobMap.get(key) + "\n");
 		}
+		out.write("*deleted*" + fileName + " : ");
 		out.close();
 
 	}
