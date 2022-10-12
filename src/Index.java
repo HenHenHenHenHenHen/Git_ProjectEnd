@@ -106,7 +106,6 @@ public class Index {
 	public void remove(String fileName, String treeString) throws IOException
 	{
 		String fileToDelete = traverseTree (fileName, treeString);
-		//FINISH
 	    PrintWriter out = new PrintWriter(new FileWriter(index));
 		for(String key : blobMap.keySet())
 		{
