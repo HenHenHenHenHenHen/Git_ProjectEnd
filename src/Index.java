@@ -59,6 +59,7 @@ public class Index {
 		while (treeScanner.hasNextLine()) {
 			String newLine = treeScanner.nextLine();
 			if (newLine.substring(0, 4).equals ("blob") && newLine.substring(7, 41).equals(file)) {
+				System.out.print("Found it");
 				treeScanner.close();
 				return  newLine.substring(7, 47);
 			}
