@@ -32,7 +32,7 @@ public class CommitJUnitTester {
 		i.add("file3.txt");
 		i.edit("file1.txt", c1.getTree().getTreeString(), "I changed this!");
 		Commit c2 = new Commit ("Did more things", "Henry", c1);
-		
+//		
 //		String file2Contents = "";
 //		BufferedReader reader2 = new BufferedReader(new FileReader("objects/09bce6ba507bdeacbeb23b5af8ec713d63ca4c72"));
 //		while (reader2.ready()) {
