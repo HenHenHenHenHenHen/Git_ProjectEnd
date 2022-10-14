@@ -30,6 +30,7 @@ public class Commit {
 		author = authorName;
 		date = getDate();
 		next = null;
+		setHead (tree);
 		
 		Index.clear();
 	}
@@ -45,8 +46,17 @@ public class Commit {
 		previous = parent;
 		next  = null;
 		parent.setNextCommit(this);
+		setHead (tree);
 		
 		Index.clear();
+	}
+	
+	public void setHead (Tree tree) throws IOException {	
+		String headContents = ("head : " + Blob.generateSHA1(tree.getTreeString()));
+		File head = new File ("HEAD");
+		FileWriter headWriter = new FileWriter (head);
+		headWriter.append(headContents);
+		headWriter.close();
 	}
 	
 	public void setNextCommit (Commit nextCommit) {
@@ -83,6 +93,7 @@ public class Commit {
             e.printStackTrace();
         }
 	}
+	
 	
 	public String commitSHA1()
 	{
