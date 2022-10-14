@@ -30,7 +30,8 @@ public class CommitJUnitTester {
 		
 //		
 		i.add("file3.txt");
-		i.edit("file1.txt", c1.getTree().getTreeString(), "I changed this!");
+//		i.edit("file1.txt", c1.getTree().getTreeString(), "I changed this!");
+		i.remove("file1.txt", c1.getTree().getTreeString());
 		Commit c2 = new Commit ("Did more things", "Henry", c1);
 //		
 //		String file2Contents = "";

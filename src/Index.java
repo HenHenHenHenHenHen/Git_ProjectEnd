@@ -86,35 +86,47 @@ public class Index {
 	}
 	
 	public void edit (String fileName, String treeString, String newContent) throws IOException {
+		
 		File edited = new File ("./objects/" + Blob.generateSHA1(newContent));
 		FileWriter editWriter = new FileWriter (edited);
 		editWriter.append(newContent);
 		editWriter.close();
 		String oldFile = traverseTree (fileName, treeString);
-		PrintWriter out = new PrintWriter(new FileWriter(index));
 		blobMap.put(fileName, Blob.generateSHA1(newContent));
-		for(String key : blobMap.keySet())
+		
+		BufferedReader indexScanner = new BufferedReader (new FileReader ("index"));
+		String outputString = "";
+		while (indexScanner.ready())
 		{
-			if (!blobMap.get(key).equals(oldFile))
-				out.write(key + " : " + blobMap.get(key) + "\n");
+			String nextLine = indexScanner.readLine();
+			if (!nextLine.contains(oldFile))
+				outputString += (nextLine + "\n");
 		}
-		out.write("*edited*" + fileName + " : " + Blob.generateSHA1(newContent));
+		outputString += ("*edited*" + fileName + " : " + Blob.generateSHA1(newContent));
+		PrintWriter out = new PrintWriter(new FileWriter(index));
+		out.write(outputString);
 		out.close();
+		indexScanner.close();
 		
 	}
 	
 	public void remove(String fileName, String treeString) throws IOException
 	{
 		String fileToDelete = traverseTree (fileName, treeString);
-	    PrintWriter out = new PrintWriter(new FileWriter(index));
-		for(String key : blobMap.keySet())
+		
+		BufferedReader indexScanner = new BufferedReader (new FileReader ("index"));
+		String outputString = "";
+		while (indexScanner.ready())
 		{
-			if (!blobMap.get(key).equals(fileToDelete))
-				out.write(key + " : " + blobMap.get(key) + "\n");
+			String nextLine = indexScanner.readLine();
+			if (!nextLine.contains(fileToDelete))
+				outputString += (nextLine + "\n");
 		}
-		out.write("*deleted*" + fileName + " : ");
+		outputString += ("*deleted*" + fileName + " : " + fileToDelete);
+		PrintWriter out = new PrintWriter(new FileWriter(index));
+		out.write(outputString);
 		out.close();
-
+		indexScanner.close();
 	}
 	
 	public static void clear () throws IOException {

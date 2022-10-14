@@ -51,7 +51,7 @@ public Tree (Tree parentTree) throws IOException {
 		indexScanner.close();
 		for (int i = 0; i < indexContents.size(); i++) {
 			treeStringBuilder.append("blob : " + prepForTreeString(indexContents.get(i)) + "\n");
-
+		}
 		treeStringBuilder.append("tree : " + Blob.generateSHA1(parentTree.getTreeString()));
 		
 		FileWriter fw = new FileWriter (index);
@@ -62,7 +62,6 @@ public Tree (Tree parentTree) throws IOException {
 		FileWriter treeStringFileWriter = new FileWriter (treeStringFile);
 		treeStringFileWriter.append(treeString);
 		treeStringFileWriter.close();
-		}
 	}
 	// If given a String input (fileName : SHA), will turn into (SHA : fileName)
 	public String prepForTreeString (String input) {
